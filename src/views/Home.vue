@@ -21,9 +21,13 @@
 
       <div class="movies-posters" v-if="!loading && !error && movies.length > 0">
         <div v-for="movie in movies" :key="movie.id" class="movie-card">
-          <img :src="movie.imagen_url || 'https://via.placeholder.com/200x300?text=Poster'" :alt="movie.titulo" class="movie-poster" />
+          <img 
+            :src="movie.imagen_URL || movie.imagen_url || movie.poster || 'https://raw.githubusercontent.com/SaraDiaz2011/taller1_Vue/main/public/vite.svg'" 
+            :alt="movie.titulo" 
+            class="movie-poster" 
+          />
           <div class="movie-info">
-            <h3>{{ movie.titulo }}</h3>
+            <h3>{{ movie.titulo }} ({{ movie.añoEstreno }})</h3>
             <p>{{ movie.descripcion?.substring(0, 100) }}...</p>
           </div>
         </div>
@@ -46,14 +50,15 @@ const error = ref(null)
 onMounted(async () => {
   try {
     const { data, error: pbError } = await supabase
-      .from('movies')
+      .from('Movies')
       .select('*')
       
     if (pbError) throw pbError
     movies.value = data || []
+    console.log('Películas cargadas:', data)
   } catch (err) {
     console.error('Error fetching movies:', err)
-    error.value = 'Ocurrió un error al cargar las películas. Por favor, asegúrate de que la tabla "peliculas" exista en tu base de datos de Supabase e intenta nuevamente.'
+    error.value = 'Error al cargar películas. Verifica la consola para más detalles.'
   } finally {
     loading.value = false
   }

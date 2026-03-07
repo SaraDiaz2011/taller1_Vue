@@ -14,15 +14,14 @@ const router = createRouter({
 })
 
 // Navigation guard
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to) => {
   const { data: { session } } = await supabase.auth.getSession()
   
   if (to.meta.requiresAuth && !session) {
-    next('/login')
-  } else if (to.meta.requiresGuest && session) {
-    next('/')
-  } else {
-    next()
+    return '/login'
+  }
+  if (to.meta.requiresGuest && session) {
+    return '/'
   }
 })
 
