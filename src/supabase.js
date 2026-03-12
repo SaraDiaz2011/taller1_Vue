@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js' //se instala la dependencia
 
 // Reemplaza estas variables con las tuyas de tu proyecto de Supabase
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://husuzrescciumddexxsg.supabase.co'
