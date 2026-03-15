@@ -1,252 +1,116 @@
 <template>
 
-<div class="home">
+<div class="landing">
 
-<h1>Películas</h1>
+  <div class="hero">
 
-<div v-if="loading">
-Cargando películas...
-</div>
+    <div class="hero-content">
 
-<div v-if="error">
-{{ error }}
-</div>
+      <h1>Películas, series y más</h1>
 
-<div v-if="isAuthenticated" class="add-movie">
-<button @click="addNewMovie">
-Agregar película
-</button>
-</div>
+      <h2>
+        Disfruta donde quieras. Cancela cuando quieras.
+      </h2>
 
-<!-- CATEGORÍAS -->
+      <p>
+        ¿Ya estás suscrito?
+      </p>
 
-<div
-v-for="(genreMovies, genre) in moviesByGenre"
-:key="genre"
-class="genre-section"
->
+      <div class="hero-buttons">
 
-<h2 class="genre-title">
-{{ genre }}
-</h2>
+        <router-link
+          to="/register"
+          class="btn-primary"
+        >
+          Comenzar
+        </router-link>
 
-<div class="movies-container">
+        <router-link
+          to="/login"
+          class="btn-secondary"
+        >
+          Iniciar sesión
+        </router-link>
 
-<div
-v-for="movie in genreMovies"
-:key="movie.id"
-class="movie-card"
->
+      </div>
 
-<img
-:src="movie.imagen_URL || 'https://via.placeholder.com/200x300'"
-alt="poster"
-/>
+    </div>
 
-<h3>{{ movie.titulo }}</h3>
-
-<p>
-{{ movie.descripcion }}
-</p>
-
-<small>
-{{ movie.genero }} - {{ movie.añoEstreno }}
-</small>
-
-<div
-v-if="isAuthenticated"
-class="actions"
->
-
-<button
-@click="editMovie(movie)"
->
-Editar
-</button>
-
-<button
-@click="removeMovie(movie.id)"
->
-Eliminar
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+  </div>
 
 </div>
 
 </template>
 
 <script setup>
-
-import { onMounted, computed } from "vue"
-import { useMovies } from "../composables/useMovies"
-
-const {
-movies,
-loading,
-error,
-isAuthenticated,
-fetchMovies,
-addMovie,
-updateMovie,
-deleteMovie
-} = useMovies()
-
-onMounted(() => {
-
-fetchMovies()
-
-})
-
-/* AGRUPAR PELÍCULAS POR GÉNERO */
-
-const moviesByGenre = computed(() => {
-
-const grouped = {}
-
-movies.value.forEach(movie => {
-
-if(!grouped[movie.genero]){
-
-grouped[movie.genero] = []
-
-}
-
-grouped[movie.genero].push(movie)
-
-})
-
-return grouped
-
-})
-
-/* AGREGAR PELÍCULA */
-
-const addNewMovie = async () => {
-
-const titulo = prompt("Título de la película")
-const descripcion = prompt("Descripción")
-const genero = prompt("Género")
-const añoEstreno = prompt("Año de estreno")
-const imagen = prompt("URL de la imagen")
-
-if(!titulo) return
-
-await addMovie({
-
-titulo,
-descripcion,
-genero,
-añoEstreno,
-imagen_URL: imagen
-
-})
-
-}
-
-/* EDITAR */
-
-const editMovie = async (movie) => {
-
-const nuevoTitulo = prompt(
-"Nuevo título",
-movie.titulo
-)
-
-const nuevaDescripcion = prompt(
-"Nueva descripción",
-movie.descripcion
-)
-
-if(!nuevoTitulo) return
-
-await updateMovie(
-
-movie.id,
-{
-titulo: nuevoTitulo,
-descripcion: nuevaDescripcion
-}
-
-)
-
-}
-
-/* ELIMINAR */
-
-const removeMovie = async (id) => {
-
-if(!confirm("¿Eliminar película?")) return
-
-await deleteMovie(id)
-
-}
-
 </script>
 
 <style>
 
-.home{
-
-padding:40px;
-
-}
-
-.genre-section{
-
-margin-bottom:50px;
-
-}
-
-.genre-title{
-
-margin-bottom:20px;
-font-size:24px;
-
-}
-
-.movies-container{
-
-display:grid;
-grid-template-columns:repeat(auto-fill,200px);
-gap:20px;
-
-}
-
-.movie-card{
-
-background:#1c1c1c;
-padding:10px;
-border-radius:10px;
+.landing{
+height:100vh;
+background:black;
 color:white;
-
 }
 
-.movie-card img{
+.hero{
+height:100%;
+display:flex;
+align-items:center;
+justify-content:center;
 
-width:100%;
-border-radius:6px;
+background-image:
+linear-gradient(
+rgba(0,0,0,0.7),
+rgba(0,0,0,0.9)
+),
+url("https://assets.nflxext.com/ffe/siteui/vlv3/9e9ab898-22c4-4bde-b0d2-06f3b9fc5fbd/8d9f0c45-9a7c-4f46-94f6-6e3f8a3a9f4b/CO-es-20240226-popsignuptwoweeks-perspective_alpha_website_medium.jpg");
 
+background-size:cover;
+background-position:center;
 }
 
-.actions{
-
-margin-top:10px;
-
+.hero-content{
+text-align:center;
+max-width:700px;
 }
 
-button{
+.hero h1{
+font-size:56px;
+margin-bottom:20px;
+}
 
-margin-right:5px;
-padding:5px 8px;
-cursor:pointer;
+.hero h2{
+font-size:24px;
+margin-bottom:20px;
+}
 
+.hero p{
+font-size:18px;
+margin-bottom:30px;
+}
+
+.hero-buttons{
+display:flex;
+justify-content:center;
+gap:20px;
+}
+
+.btn-primary{
+background:#e50914;
+padding:12px 25px;
+border-radius:4px;
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+.btn-secondary{
+background:#333;
+padding:12px 25px;
+border-radius:4px;
+color:white;
+text-decoration:none;
 }
 
 </style>
