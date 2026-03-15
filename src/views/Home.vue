@@ -6,14 +6,18 @@
 
     <div class="hero-content">
 
-      <h1>Películas, series y más</h1>
+      <h1>Bienvenido a tu catálogo de películas</h1>
 
       <h2>
-        Disfruta donde quieras. Cancela cuando quieras.
+        Administra tu colección de películas fácilmente.
       </h2>
 
       <p>
-        ¿Ya estás suscrito?
+        Podrás agregar, editar y eliminar películas a tu gusto.
+      </p>
+
+      <p class="login-text">
+        ¿Ya tienes una cuenta?
       </p>
 
       <div class="hero-buttons">
@@ -22,7 +26,7 @@
           to="/register"
           class="btn-primary"
         >
-          Comenzar
+          Registrarse
         </router-link>
 
         <router-link
@@ -49,26 +53,33 @@
 
 .landing{
 height:100vh;
-background:black;
 color:white;
 }
 
+/* HERO */
+
 .hero{
+
 height:100%;
 display:flex;
 align-items:center;
 justify-content:center;
 
+/* IMAGEN DE FONDO */
+
 background-image:
 linear-gradient(
-rgba(0,0,0,0.7),
-rgba(0,0,0,0.9)
+rgba(0,0,0,0.75),
+rgba(0,0,0,0.95)
 ),
-url("https://assets.nflxext.com/ffe/siteui/vlv3/9e9ab898-22c4-4bde-b0d2-06f3b9fc5fbd/8d9f0c45-9a7c-4f46-94f6-6e3f8a3a9f4b/CO-es-20240226-popsignuptwoweeks-perspective_alpha_website_medium.jpg");
+url("https://image.tmdb.org/t/p/original/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg");
 
 background-size:cover;
 background-position:center;
+
 }
+
+/* CONTENIDO */
 
 .hero-content{
 text-align:center;
@@ -81,24 +92,32 @@ margin-bottom:20px;
 }
 
 .hero h2{
-font-size:24px;
+font-size:26px;
 margin-bottom:20px;
+font-weight:normal;
 }
 
 .hero p{
 font-size:18px;
-margin-bottom:30px;
+margin-bottom:20px;
 }
+
+.login-text{
+margin-top:30px;
+}
+
+/* BOTONES */
 
 .hero-buttons{
 display:flex;
 justify-content:center;
 gap:20px;
+margin-top:20px;
 }
 
 .btn-primary{
 background:#e50914;
-padding:12px 25px;
+padding:12px 28px;
 border-radius:4px;
 color:white;
 text-decoration:none;
@@ -107,10 +126,18 @@ font-weight:bold;
 
 .btn-secondary{
 background:#333;
-padding:12px 25px;
+padding:12px 28px;
 border-radius:4px;
 color:white;
 text-decoration:none;
+}
+
+.btn-primary:hover{
+background:#f40612;
+}
+
+.btn-secondary:hover{
+background:#555;
 }
 
 </style>
