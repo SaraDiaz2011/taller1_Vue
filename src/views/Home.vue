@@ -13,6 +13,7 @@
   </div>
 
   <!-- BOTÓN AGREGAR -->
+
   <div v-if="isAuthenticated" class="add-movie">
     <button @click="addNewMovie">
       Agregar película
@@ -28,7 +29,8 @@
     >
 
       <img
-        :src="movie.imagen || 'https://via.placeholder.com/200x300'"
+        :src="movie.imagen_URL || 'https://via.placeholder.com/200x300'"
+        alt="poster"
       />
 
       <h3>{{ movie.titulo }}</h3>
@@ -37,15 +39,26 @@
         {{ movie.descripcion }}
       </p>
 
-      <!-- BOTONES SOLO PARA USUARIOS LOGUEADOS -->
+      <small>
+        {{ movie.genero }} - {{ movie.añoEstreno }}
+      </small>
 
-      <div v-if="isAuthenticated" class="actions">
+      <!-- BOTONES SOLO SI ESTÁ AUTENTICADO -->
 
-        <button @click="editMovie(movie)">
+      <div
+        v-if="isAuthenticated"
+        class="actions"
+      >
+
+        <button
+          @click="editMovie(movie)"
+        >
           Editar
         </button>
 
-        <button @click="removeMovie(movie.id)">
+        <button
+          @click="removeMovie(movie.id)"
+        >
           Eliminar
         </button>
 
@@ -61,8 +74,8 @@
 
 <script setup>
 
-import { onMounted } from 'vue'
-import { useMovies } from '../composables/useMovies'
+import { onMounted } from "vue"
+import { useMovies } from "../composables/useMovies"
 
 const {
   movies,
@@ -76,32 +89,58 @@ const {
 } = useMovies()
 
 onMounted(() => {
+
   fetchMovies()
+
 })
 
 const addNewMovie = async () => {
 
   const titulo = prompt("Título de la película")
   const descripcion = prompt("Descripción")
+  const genero = prompt("Género")
+  const añoEstreno = prompt("Año de estreno")
+  const imagen = prompt("URL de la imagen")
 
   if (!titulo) return
 
   await addMovie({
+
     titulo,
-    descripcion
+    descripcion,
+    genero,
+    añoEstreno,
+    imagen_URL: imagen
+
   })
 
 }
 
 const editMovie = async (movie) => {
 
-  const nuevoTitulo = prompt("Nuevo título", movie.titulo)
+  const nuevoTitulo = prompt(
+    "Nuevo título",
+    movie.titulo
+  )
+
+  const nuevaDescripcion = prompt(
+    "Nueva descripción",
+    movie.descripcion
+  )
 
   if (!nuevoTitulo) return
 
-  await updateMovie(movie.id, {
-    titulo: nuevoTitulo
-  })
+  await updateMovie(
+
+    movie.id,
+    {
+
+      titulo: nuevoTitulo,
+      descripcion: nuevaDescripcion
+
+    }
+
+  )
 
 }
 
@@ -117,32 +156,46 @@ const removeMovie = async (id) => {
 
 <style>
 
-.home {
-  padding: 40px;
+.home{
+  padding:40px;
 }
 
-.movies-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill,200px);
-  gap: 20px;
+.movies-container{
+
+  display:grid;
+  grid-template-columns:repeat(auto-fill,200px);
+  gap:20px;
+
 }
 
-.movie-card {
-  background: #222;
-  padding: 10px;
-  border-radius: 10px;
+.movie-card{
+
+  background:#1c1c1c;
+  padding:10px;
+  border-radius:10px;
+  color:white;
+
 }
 
-.movie-card img {
-  width: 100%;
+.movie-card img{
+
+  width:100%;
+  border-radius:6px;
+
 }
 
-.actions {
-  margin-top: 10px;
+.actions{
+
+  margin-top:10px;
+
 }
 
-button {
-  margin-right: 5px;
+button{
+
+  margin-right:5px;
+  padding:5px 8px;
+  cursor:pointer;
+
 }
 
 </style>
