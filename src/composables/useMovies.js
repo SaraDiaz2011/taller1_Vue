@@ -1,5 +1,5 @@
-import { ref } from 'vue'
-import { supabase } from '../supabase'
+import { ref } from "vue"
+import { supabase } from "../supabase"
 
 export function useMovies(){
 
@@ -12,19 +12,25 @@ const fetchMovies = async ()=>{
 
 loading.value = true
 
+/* VERIFICAR SESIÓN */
+
 const { data:{ session } } =
 await supabase.auth.getSession()
 
 isAuthenticated.value = !!session
 
-const { data , error } =
+/* OBTENER PELÍCULAS */
+
+const { data, error } =
 await supabase
 .from("Movies")
 .select("*")
+.order("titulo")
 
 if(error){
 
 console.error(error)
+error.value = error.message
 
 }
 
@@ -34,6 +40,8 @@ loading.value = false
 
 }
 
+/* AGREGAR */
+
 const addMovie = async(movie)=>{
 
 const { error } =
@@ -42,16 +50,16 @@ await supabase
 .insert([movie])
 
 if(error){
-
 console.error(error)
-
 }
 
 await fetchMovies()
 
 }
 
-const updateMovie = async(id , movie)=>{
+/* EDITAR */
+
+const updateMovie = async(id,movie)=>{
 
 const { error } =
 await supabase
@@ -60,14 +68,14 @@ await supabase
 .eq("id",id)
 
 if(error){
-
 console.error(error)
-
 }
 
 await fetchMovies()
 
 }
+
+/* ELIMINAR */
 
 const deleteMovie = async(id)=>{
 
@@ -78,9 +86,7 @@ await supabase
 .eq("id",id)
 
 if(error){
-
 console.error(error)
-
 }
 
 await fetchMovies()
