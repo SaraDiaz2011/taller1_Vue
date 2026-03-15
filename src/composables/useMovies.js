@@ -11,28 +11,52 @@ export function useMovies() {
     loading.value = true
     error.value = null
     
-    try {
-      // Check auth status
-      const { data: { session } } = await supabase.auth.getSession()
-      isAuthenticated.value = !!session
-      
-      const limit = session ? 100 : 100 // We fetch all we need, filtering happens in Home.vue
+    const { data: { session } } = await supabase.auth.getSession()
+    isAuthenticated.value = !!session
 
-      const { data, error: pbError } = await supabase
-        .from('Movies')
-        .select('*')
-        .limit(limit)
-        
-      if (pbError) throw pbError
-      
-      movies.value = data || []
-      
-    } catch (err) {
-      console.error('Error fetching movies:', err)
-      error.value = 'Error al cargar películas. Verifica tu conexión.'
-    } finally {
-      loading.value = false
-    }
+    const { data, error: pbError } = await supabase
+      .from('Movies')
+      .select('*')
+
+    if (pbError) throw pbError
+
+    movies.value = data || []
+    loading.value = false
+  }
+
+  // ➕ CREAR PELÍCULA
+  const addMovie = async (movie) => {
+    const { error } = await supabase
+      .from('Movies')
+      .insert([movie])
+
+    if (error) throw error
+
+    await fetchMovies()
+  }
+
+  // ✏️ EDITAR PELÍCULA
+  const updateMovie = async (id, movie) => {
+    const { error } = await supabase
+      .from('Movies')
+      .update(movie)
+      .eq('id', id)
+
+    if (error) throw error
+
+    await fetchMovies()
+  }
+
+  // 🗑️ ELIMINAR PELÍCULA
+  const deleteMovie = async (id) => {
+    const { error } = await supabase
+      .from('Movies')
+      .delete()
+      .eq('id', id)
+
+    if (error) throw error
+
+    await fetchMovies()
   }
 
   return {
@@ -40,6 +64,9 @@ export function useMovies() {
     loading,
     error,
     isAuthenticated,
-    fetchMovies
+    fetchMovies,
+    addMovie,
+    updateMovie,
+    deleteMovie
   }
 }
