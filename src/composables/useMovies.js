@@ -3,101 +3,101 @@ import { supabase } from '../supabase'
 
 export function useMovies(){
 
-  const movies = ref([])
-  const loading = ref(false)
-  const error = ref(null)
-  const isAuthenticated = ref(false)
+const movies = ref([])
+const loading = ref(false)
+const error = ref(null)
+const isAuthenticated = ref(false)
 
-  const fetchMovies = async () =>{
+const fetchMovies = async ()=>{
 
-    loading.value = true
+loading.value = true
 
-    const { data:{ session } } =
-      await supabase.auth.getSession()
+const { data:{ session } } =
+await supabase.auth.getSession()
 
-    isAuthenticated.value = !!session
+isAuthenticated.value = !!session
 
-    const { data , error } =
-      await supabase
-      .from("Movies")
-      .select("*")
+const { data , error } =
+await supabase
+.from("Movies")
+.select("*")
 
-    if(error){
+if(error){
 
-      console.error(error)
+console.error(error)
 
-    }
+}
 
-    movies.value = data || []
+movies.value = data || []
 
-    loading.value = false
+loading.value = false
 
-  }
+}
 
-  const addMovie = async(movie)=>{
+const addMovie = async(movie)=>{
 
-    const { error } =
-      await supabase
-      .from("Movies")
-      .insert([movie])
+const { error } =
+await supabase
+.from("Movies")
+.insert([movie])
 
-    if(error){
+if(error){
 
-      console.error(error)
+console.error(error)
 
-    }
+}
 
-    await fetchMovies()
+await fetchMovies()
 
-  }
+}
 
-  const updateMovie = async(id , movie)=>{
+const updateMovie = async(id , movie)=>{
 
-    const { error } =
-      await supabase
-      .from("Movies")
-      .update(movie)
-      .eq("id",id)
+const { error } =
+await supabase
+.from("Movies")
+.update(movie)
+.eq("id",id)
 
-    if(error){
+if(error){
 
-      console.error(error)
+console.error(error)
 
-    }
+}
 
-    await fetchMovies()
+await fetchMovies()
 
-  }
+}
 
-  const deleteMovie = async(id)=>{
+const deleteMovie = async(id)=>{
 
-    const { error } =
-      await supabase
-      .from("Movies")
-      .delete()
-      .eq("id",id)
+const { error } =
+await supabase
+.from("Movies")
+.delete()
+.eq("id",id)
 
-    if(error){
+if(error){
 
-      console.error(error)
+console.error(error)
 
-    }
+}
 
-    await fetchMovies()
+await fetchMovies()
 
-  }
+}
 
-  return{
+return{
 
-    movies,
-    loading,
-    error,
-    isAuthenticated,
-    fetchMovies,
-    addMovie,
-    updateMovie,
-    deleteMovie
+movies,
+loading,
+error,
+isAuthenticated,
+fetchMovies,
+addMovie,
+updateMovie,
+deleteMovie
 
-  }
+}
 
 }
