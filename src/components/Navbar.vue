@@ -1,14 +1,15 @@
 <template>
   <nav :class="['navbar', { 'navbar-scrolled': isScrolled }]">
     <div class="navbar-left">
-      <div class="navbar-logo">
-        <router-link to="/">NETFLIX</router-link>
-      </div>
-      <ul class="navbar-links-list">
-        <li><router-link to="/">Inicio</router-link></li>
-        <li><router-link to="/">Películas</router-link></li>
-        <li><router-link to="/">Mi lista</router-link></li>
-      </ul>
+    <div class="navbar-logo">
+      <router-link :to="user ? '/peliculas' : '/'">NETFLIX</router-link>
+    </div>
+
+    <ul class="navbar-links-list">
+      <li><router-link to="/">Inicio</router-link></li>
+      <li><router-link to="/peliculas">Películas</router-link></li>
+      <li><router-link to="/mi-lista">Mi lista</router-link></li>
+    </ul>
     </div>
 
     <div class="navbar-right">

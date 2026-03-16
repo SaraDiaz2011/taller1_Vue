@@ -9,15 +9,11 @@
       <h1>Bienvenido a tu catálogo de películas</h1>
 
       <h2>
-        Administra tu colección de películas fácilmente.
+        Administra tu colección de películas fácilmente
       </h2>
 
       <p>
         Podrás agregar, editar y eliminar películas a tu gusto.
-      </p>
-
-      <p class="login-text">
-        ¿Ya tienes una cuenta?
       </p>
 
       <div class="hero-buttons">
@@ -61,7 +57,7 @@ onMounted(async () => {
 
   if(session){
 
-    router.push("/movies")
+    router.push("/peliculas")
 
   }
 
@@ -85,8 +81,6 @@ display:flex;
 align-items:center;
 justify-content:center;
 
-/* IMAGEN DE FONDO */
-
 background-image:
 linear-gradient(
 rgba(0,0,0,0.75),
@@ -98,8 +92,6 @@ background-size:cover;
 background-position:center;
 
 }
-
-/* CONTENIDO */
 
 .hero-content{
 text-align:center;
@@ -121,12 +113,6 @@ font-weight:normal;
 font-size:18px;
 margin-bottom:20px;
 }
-
-.login-text{
-margin-top:30px;
-}
-
-/* BOTONES */
 
 .hero-buttons{
 display:flex;
@@ -150,14 +136,6 @@ padding:12px 28px;
 border-radius:4px;
 color:white;
 text-decoration:none;
-}
-
-.btn-primary:hover{
-background:#f40612;
-}
-
-.btn-secondary:hover{
-background:#555;
 }
 
 </style>
