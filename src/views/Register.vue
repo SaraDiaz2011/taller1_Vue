@@ -18,7 +18,7 @@
         <div v-if="errorMsg" class="error-msg">{{ errorMsg }}</div>
         
         <div class="auth-links">
-          <p>¿Ya tienes cuenta? <router-link to="/login">Inicia sesión aquí.</router-link></p>
+          <p>¿Ya estás suscrito? <router-link to="/login">Inicia sesión aquí.</router-link></p>
         </div>
       </form>
     </div>
@@ -75,7 +75,7 @@ const handleRegister = async () => {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('https://assets.nflxext.com/ffe/siteui/vlv3/d1532433-07b1-4e39-a920-0f08b81a489e/67033404-2df8-42e0-a5f0-4fc828d10d16/US-en-20231120-popsignuptwoweeks-perspective_alpha_website_large.jpg');
+  background-image: url('https://image.tmdb.org/t/p/original/8Y43POKhhjrloUMYYpo1Zzgxzpf.jpg');
   background-size: cover;
   background-position: center;
   opacity: 0.5;
