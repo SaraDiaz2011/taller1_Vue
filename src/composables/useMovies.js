@@ -8,7 +8,7 @@ const loading = ref(false)
 const error = ref(null)
 const isAuthenticated = ref(false)
 
-const fetchMovies = async ()=>{
+const fetchMovies = async (searchQueryText = "")=>{
 
 loading.value = true
 
@@ -21,20 +21,25 @@ isAuthenticated.value = !!session
 
 /* OBTENER PELÍCULAS */
 
-const { data, error } =
-await supabase
+let query = supabase
 .from("Movies")
 .select("*")
 .order("titulo")
 
-if(error){
-
-console.error(error)
-error.value = error.message
-
+if (searchQueryText) {
+  query = query.ilike("titulo", `%${searchQueryText}%`)
 }
 
-movies.value = data || []
+const { data, error: pbError } = await query
+
+if(pbError){
+
+console.error(pbError)
+error.value = pbError.message
+
+} else {
+  movies.value = data || []
+}
 
 loading.value = false
 

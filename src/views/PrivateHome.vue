@@ -98,10 +98,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useMovies } from '../composables/useMovies'
+import { useSearch } from '../composables/useSearch'
 
 const { movies, loading, error, fetchMovies, addMovie, updateMovie, deleteMovie } = useMovies()
+
+// Estado global de Búsqueda
+const { searchQuery } = useSearch()
 
 // Estado del Modal
 const isModalOpen = ref(false)
@@ -121,7 +125,16 @@ const initialFormState = {
 const formData = ref({ ...initialFormState })
 
 onMounted(async () => {
-  await fetchMovies()
+  await fetchMovies(searchQuery.value)
+})
+
+// Búsqueda en tiempo real con Debounce
+let searchTimeout = null
+watch(searchQuery, (newQuery) => {
+  if (searchTimeout) clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    fetchMovies(newQuery)
+  }, 500)
 })
 
 // Computada para agrupar por género
