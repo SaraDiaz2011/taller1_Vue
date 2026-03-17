@@ -24,7 +24,7 @@
           type="text" 
           ref="searchInput"
           v-model="searchQuery" 
-          placeholder="Títulos, personas, géneros" 
+          placeholder="Títulos, personas, géneros"
           class="search-input"
           @blur="handleSearchBlur"
         />
