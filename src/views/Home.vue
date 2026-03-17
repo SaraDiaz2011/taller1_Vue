@@ -1,141 +1,37 @@
 <template>
-
-<div class="landing">
-
-  <div class="hero">
-
-    <div class="hero-content">
-
-      <h1>Bienvenido a tu catálogo de películas</h1>
-
-      <h2>
-        Administra tu colección de películas fácilmente
-      </h2>
-
-      <p>
-        Podrás agregar, editar y eliminar películas a tu gusto.
-      </p>
-
-      <div class="hero-buttons">
-
-        <router-link
-          to="/register"
-          class="btn-primary"
-        >
-          Registrarse
-        </router-link>
-
-        <router-link
-          to="/login"
-          class="btn-secondary"
-        >
-          Iniciar sesión
-        </router-link>
-
-      </div>
-
-    </div>
-
+  <div class="home-wrapper">
+    <!-- Componente de Dashboard para usuario Logueados -->
+    <PrivateHome v-if="isAuthenticated" />
+    
+    <!-- Componente de Landing para visitantes -->
+    <PublicHome v-else />
   </div>
-
-</div>
-
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
+import { supabase } from '../supabase'
 
-import { onMounted } from "vue"
-import { useRouter } from "vue-router"
-import { supabase } from "../supabase"
+// Importar los componentes separados
+import PublicHome from './PublicHome.vue'
+import PrivateHome from './PrivateHome.vue'
 
-const router = useRouter()
+const isAuthenticated = ref(false)
 
 onMounted(async () => {
+  // Suscripción al estado real para que la vista cambie mágicamente sin refrescar la página
+  const { data: { session } } = await supabase.auth.getSession()
+  isAuthenticated.value = !!session
 
-  const { data:{ session } } =
-  await supabase.auth.getSession()
-
-  if(session){
-
-    router.push("/peliculas")
-
-  }
-
+  supabase.auth.onAuthStateChange((_event, session) => {
+    isAuthenticated.value = !!session
+  })
 })
-
 </script>
 
-<style>
-
-.landing{
-height:100vh;
-color:white;
+<style scoped>
+.home-wrapper {
+  min-height: 100vh;
+  width: 100%;
 }
-
-/* HERO */
-
-.hero{
-
-height:100%;
-display:flex;
-align-items:center;
-justify-content:center;
-
-background-image:
-linear-gradient(
-rgba(0,0,0,0.75),
-rgba(0,0,0,0.95)
-),
-url("https://image.tmdb.org/t/p/original/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg");
-
-background-size:cover;
-background-position:center;
-
-}
-
-.hero-content{
-text-align:center;
-max-width:700px;
-}
-
-.hero h1{
-font-size:56px;
-margin-bottom:20px;
-}
-
-.hero h2{
-font-size:26px;
-margin-bottom:20px;
-font-weight:normal;
-}
-
-.hero p{
-font-size:18px;
-margin-bottom:20px;
-}
-
-.hero-buttons{
-display:flex;
-justify-content:center;
-gap:20px;
-margin-top:20px;
-}
-
-.btn-primary{
-background:#e50914;
-padding:12px 28px;
-border-radius:4px;
-color:white;
-text-decoration:none;
-font-weight:bold;
-}
-
-.btn-secondary{
-background:#333;
-padding:12px 28px;
-border-radius:4px;
-color:white;
-text-decoration:none;
-}
-
 </style>
